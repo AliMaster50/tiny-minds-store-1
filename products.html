@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المنتجات | Tiny Minds</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FAF5EA; --cream-deep:#F0E7D6; --sage:#6C7C58; --sage-deep:#4E5B3F;
+    --clay:#C97A47; --wood:#8B5A3C; --ochre:#D9A441; --ink:#2E2A22; --ink-soft:#5A5346;
+    --card:#FFFFFF; --ring:#E4D9C2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--cream); color:var(--ink); font-family:'Tajawal',sans-serif; line-height:1.6;}
+  h1,h2,h3,.display{font-family:'Cairo',sans-serif;}
+  a{color:inherit; text-decoration:none;}
+  ul{list-style:none;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+
+  header{position:sticky; top:0; z-index:50; background:rgba(250,245,234,.9); backdrop-filter:blur(10px); border-bottom:1px solid var(--ring);}
+  nav.wrap{display:flex; align-items:center; justify-content:space-between; height:82px;}
+  .logo{display:flex; align-items:center; gap:10px; font-family:'Cairo'; font-weight:800; font-size:22px; color:var(--sage-deep);}
+  .logo .mark{width:38px; height:38px; flex:none;}
+  .logo .tag{display:block; font-family:'Tajawal'; font-weight:400; font-size:11px; color:var(--wood); letter-spacing:1px;}
+  .nav-links{display:flex; gap:36px; font-weight:600; font-size:15px; color:var(--ink-soft);}
+  .nav-links a.active{color:var(--sage-deep); border-bottom:2px solid var(--clay); padding-bottom:6px;}
+  .nav-cta{background:var(--sage-deep); color:#fff; padding:12px 26px; border-radius:999px; font-weight:700; font-size:14px; transition:background .25s, transform .25s;}
+  .nav-cta:hover{background:var(--clay); transform:translateY(-2px);}
+
+  .page-head{padding:64px 0 40px; text-align:center;}
+  .eyebrow{display:inline-flex; align-items:center; gap:8px; background:var(--cream-deep); border:1px solid var(--ring); color:var(--wood); font-weight:700; font-size:13px; padding:8px 16px; border-radius:999px; margin-bottom:18px;}
+  .eyebrow::before{content:'●'; color:var(--clay); font-size:8px;}
+  .page-head h1{font-size:40px; color:var(--sage-deep); font-weight:800;}
+  .page-head p{color:var(--ink-soft); margin-top:12px; max-width:560px; margin-inline:auto; font-size:16px;}
+
+  /* age filter */
+  .filters{display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin:34px 0 10px;}
+  .chip{
+    background:var(--card); border:1px solid var(--ring); color:var(--ink-soft);
+    font-size:13.5px; font-weight:700; padding:9px 18px; border-radius:999px; cursor:pointer;
+    transition:all .25s;
+  }
+  .chip:hover, .chip.on{background:var(--sage-deep); color:#fff; border-color:var(--sage-deep);}
+
+  .products{padding:40px 0 90px;}
+  .product-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:26px;}
+  .product-card{
+    background:var(--card); border-radius:24px; border:1px solid var(--ring);
+    overflow:hidden; display:flex; flex-direction:column; transition:transform .3s, box-shadow .3s;
+  }
+  .product-card:hover{transform:translateY(-6px); box-shadow:0 24px 40px -20px rgba(46,42,34,.28);}
+  .product-media{aspect-ratio:1/0.82; background:var(--cream-deep); display:flex; align-items:center; justify-content:center; position:relative;}
+  .product-media svg{width:56%;}
+  .age-badge{
+    position:absolute; top:14px; right:14px; background:#fff; color:var(--sage-deep);
+    font-size:11.5px; font-weight:800; padding:5px 12px; border-radius:999px; border:1px solid var(--ring);
+  }
+  .badge{position:absolute; top:14px; left:14px; background:var(--clay); color:#fff; font-size:10.5px; font-weight:700; padding:5px 11px; border-radius:999px;}
+  .product-info{padding:20px 20px 22px; flex:1; display:flex; flex-direction:column;}
+  .product-info h3{font-size:16px; font-weight:700; margin-bottom:5px;}
+  .desc{font-size:13px; color:var(--ink-soft); margin-bottom:12px;}
+  .price{font-family:'Cairo'; font-weight:800; color:var(--clay); font-size:17px; margin-bottom:12px;}
+  .learn{font-size:12.5px; color:var(--sage-deep); background:var(--cream-deep); padding:10px 12px; border-radius:12px; margin-top:auto; line-height:1.55;}
+  .learn b{display:block; font-size:11.5px; color:var(--wood); margin-bottom:4px;}
+
+  footer{background:var(--sage-deep); color:#EDE6D3; padding:30px 0; text-align:center; font-size:12.5px;}
+
+  @media (max-width:960px){.product-grid{grid-template-columns:repeat(2,1fr);} .nav-links{display:none;}}
+  @media (max-width:600px){.product-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="logo">
+      <svg class="mark" viewBox="0 0 48 48" fill="none">
+        <circle cx="24" cy="24" r="22" fill="#EFE6D2"/>
+        <path d="M24 8 C15 8 9 15 9 24 C9 33 15 40 24 40" stroke="#6C7C58" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <circle cx="24" cy="24" r="7" fill="#C97A47"/>
+        <path d="M31 15 L36 20 L31 25" stroke="#8B5A3C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <div>Tiny Minds<span class="tag">العب • تعلّم • اكتشف</span></div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html">الرئيسية</a></li>
+      <li><a href="products.html" class="active">المنتجات</a></li>
+      <li><a href="index.html#why">لماذا نحن</a></li>
+      <li><a href="index.html#reviews">آراء العملاء</a></li>
+    </ul>
+    <a href="#" class="nav-cta">السلة (0)</a>
+  </nav>
+</header>
+
+<section class="page-head wrap">
+  <span class="eyebrow">مجموعة مختارة بعناية</span>
+  <h1>15 لعبة مونتيسوري لكل مرحلة من 1 إلى 6 سنوات</h1>
+  <p>كل لعبة اخترناها تخدم مهارة تنمو مع طفلك، من أول قبضة يد وحتى أول كلمة يكتبها بنفسه.</p>
+</section>
+
+<div class="filters wrap">
+  <button class="chip on" data-age="all">الكل</button>
+  <button class="chip" data-age="1-2">1–2 سنة</button>
+  <button class="chip" data-age="2-4">2–4 سنوات</button>
+  <button class="chip" data-age="4-6">4–6 سنوات</button>
+</div>
+
+<section class="products">
+  <div class="wrap product-grid" id="grid">
+
+    <!-- 1 -->
+    <div class="product-card" data-age="1-2">
+      <div class="product-media"><span class="badge">الأكثر مبيعًا</span><span class="age-badge">1–3 سنوات</span>
+        <svg viewBox="0 0 100 100"><rect x="10" y="15" width="80" height="60" rx="10" fill="#8B5A3C"/><rect x="18" y="23" width="64" height="44" rx="6" fill="#F0E7D6"/><circle cx="35" cy="45" r="9" fill="#6C7C58"/><rect x="55" y="36" width="18" height="18" rx="4" fill="#C97A47"/></svg>
+      </div>
+      <div class="product-info">
+        <h3>لوحة الأنشطة اللبدية للسفر</h3>
+        <p class="desc">لوحة قماشية خفيفة قابلة للطي، تثبّت الأزرار والأشكال بأمان أثناء التنقل.</p>
+        <div class="price">89 ريال</div>
+        <div class="learn"><b>ماذا يتعلم طفلك؟</b>المهارات الحركية الدقيقة والتركيز أثناء التنقل.</div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="product-card" data-age="2-4">
+      <div class="product-media"><span class="age-badge">2–4 سنوات</span>
+        <svg viewBox="0 0 100 100"><rect x="15" y="20" width="70" height="55" rx="8" fill="#D9A441"/><circle cx="35" cy="47" r="10" fill="#F0E7D6"/><rect x="55" y="37" width="20" height="20" rx="4" fill="#F0E7D6"/></svg>
+      </div>
+      <div class="product-info">
+        <h3>لوحة الأقفال الخشبية</h3>
+        <p class="desc">5 أقفال حقيقية مختلفة يتعلم طفلك فتحها وإغلاقها بنفسه.</p>
+        <div class="price">99 ريال</div>
+        <div class="learn"><b>ماذا يتعلم طفلك؟</b>الاستقلالية وحل المشكلات خطوة بخطوة.</div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="product-card" data-age="1-2">
+      <div class="product-media"><span class="age-badge">1–4 سنوات</span>
+        <svg viewBox="0 0 100 100"><rect x="20" y="15" width="60" height="70" rx="6" fill="#6C7C58"/><rect x="28" y="25" width="44" height="8" rx="4" fill="#F0E7D6"/><rect x="28" y="40" width="44" height="8" rx="4" fill="#F0E7D6"/><rect x="28" y="55" width="30" height="8" rx="4" fill="#F0E7D6"/></svg>
+      </div>
+      <div class="product-info">
+        <h3>كتاب الأنشطة الهادئ</h3>
+        <p class="desc">صفحات قماشية تفاعلية: سحّابات، أزرار، وربطات لتدريب الأصابع.</p>
+        <div class="price">79 ريال</div>
+        <div class="learn"><b>ماذا يتعلم طفلك؟</b>القراءة البصرية وتتابع الخطوات بصبر.</div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="product-card" data-age="1-2">
+      <div class="product-media"><span class="age-badge">1–3 سنوات</span>
+        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="35" fill="#C97A47"/><circle cx="50" cy="50" r="14" fill="#F0E7D6"/><path d="M50 15 L58 30 L42 30 Z" fill="#F0E7D6"/></svg>
+      </div>
+      <div class="product-info">
+        <h3>لوحة تصنيف الأشكال</h3>
+        <p class="desc">4 أشكال أساسية بألوان زاهية تُدخل كل واحدة في مكانها الصحيح.</p>
+        <div class="price">69 ريال</div>
+        <div class="learn"><b>ماذا يتعلم طفلك؟</b>التمييز بين الأشكال والتناسق بين العين واليد.</div>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="product-card" data-age="1-2">
+      <div class="product-media"><span class="age-badge">1–3 سنوات</span>
+        <svg viewBox="0 0 100 100"><circle cx="30" cy="35" r="14" fill="#C97A47"/><circle cx="55" cy="30" r="14" fill="#6C7C58"/><circle cx="72" cy="50" r="14" fill="#D9A441"/><circle cx="45" cy="62" r="14" fill="#8B5A3C"/></svg>
+      </div>
+      <div class="product-info">
+        <h3>لعبة مطابقة الألوان</h3>
+        <p class="desc">أقراص خشبية ملونة تُطابق مع بطاقات مقابلة لها بنفس اللون.</p>
+        <div class="price">59 ريال</div>
+        <div class="learn"><b>ماذا يتعلم طفلك؟</b>تمييز الألوان وتوسيع المفردات اللغوية.</div>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="product-card" data-age="4-6">
+      <div class="product-media"><span class="age-badge">3–6 سنوات</span>
+        <svg viewBox="0 0 100 100"><circle cx="25" cy="30" r="6" fill="#C97A47"/><circle cx="45" cy="25" r="6" fill="#6C7C58"/><circle cx="65" cy="32" r="6" fill="#D9A441"/><circle cx="35" cy="55" r="6" fill="#8B5A3C"/><circle cx="60" cy="60" r="6" fill="#C97A47"/><path d="M25 30 L45 25 L65 32 L35 55 L60 60" stroke="#8B5A3C" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+      </div>
+      <div class="product-info">
+        <h3>خرز التسلسل والتنظيم</h3>
+        <p class="desc">خرزات خشبية وخيط متين، مع بطاقات أنماط للتسلسل حسب اللون والشكل.</p>
+        <div class="price">49 ريال</div>
+        <div class="learn"><b>ماذا يتعلم طفلك؟</b>التركيز، الصبر، والتفكير المنطقي بالأنماط.</div>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="product-card" data-age="2-4">
+      <div class="product-media"><span class="age-badge">2–4 سنوات</span>
+        <svg viewBox="0 0 100 100"><rect x="15" y="20" width="70" height="60" rx="10" fill="#F0E7D6" stroke="#8B5A3C" stroke-width="2"/><circle cx="35" cy="50" r="12" fill="#C97A47"/><rect x="55" y="38" width="24" height="24" rx="12" fill="#6C7C58"/></svg>
+      </div>
+      <div class="product-info">
+        <h3>ألغاز الحيوانات الخشبية</h3>
+        <p class="desc">6 قطع لغز بمقابض خشبية سهلة الإمساك لأصابع صغيرة.</p>
+        <div class="price">55 ريال</div>
+        <div class="learn"><b>ماذا يتعلم طفلك؟</b>حل المشكلات والتعرف على أسماء الحيوانات.</div>
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="product-card" data-age="1-2">
+      <div class="product-media"><span class="age-badge">1–3 سنوات</span>
+        <svg viewBox="0 0 100 100"><rect x="20" y="30" width="60" height="45" rx="8" fill="#D9A441"/><rect x="42" y="15" width="16" height="30" rx="6" fill="#6C7C58"/><circle cx="50" cy="50" r="10" fill="#F0E7D6"/></svg>
+      </div>
+      <div class="product-info">
+        <h3>لعبة قطف الجزر</h3>
+        <p class="desc">10 جزرات خشبية تُغرس وتُقطف من صندوق مزرعة صغير.</p>
+        <div class="price">69 ريال</div>
+        <div class="learn"><b>ماذا يتعلم طفلك؟</b>قوة قبضة اليد والحركة السحبية المتحكم بها.</div>
+      </div>
+    </div>
+
+    <!-- 9 -->
+    <div class="product-card" data-age="2-4">
+      <div class="product-media"><span class="age-badge">2–4 سنوات</span>
+        <svg viewBox="0 0 100 100"><rect x="20" y="25" width="60" height="50" rx="8" fill="#8B5A3C"/><rect x="42" y="15" width="16" height="18" rx="3" fill="#F0E7D6"/><circle cx="50" cy="50" r="9" fill="#D9A441"/></svg>
+      </div>
+      <div class="product-info">
+        <h3>صندوق العملات المونتيسوري</h3>
+        <p class="desc">صندوق خشبي بفتحة واحدة لإسقاط قطع نقدية دائرية بالتناوب.</p>
+        <div class="price">79 ريال</div>
+        <div class="learn"><b>ماذا يتعلم طفلك؟</b>التناسق الحركي والتركيز على هدف واحد.</div>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="product-card" data-age="1-2">
+      <div class="product-media"><span class="age-badge">1–2 سنة</span>
+        <svg viewBox="0 0 100 100"><rect x="15" y="35" width="70" height="45" rx="10" fill="#6C7C58"/><circle cx="50" cy="25" r="14" fill="#C97A47"/><rect x="43" y="35" width="14" height="14" fill="#F0E7D6"/></svg>
+      </div>
+      <div class="product-info">
+        <h3>صندوق إسقاط الكرات</h3>
+        <p class="desc">كرات خشبية ملونة تُسقط من الأعلى وتظهر من الأسفل — أول درس في علاقة السبب والنتيجة.</p>
+        <div class="price">85 ريال</div>
+        <div class="learn"><b>ماذا يتعلم طفلك؟</b>فهم السبب والنتيجة وثبات الجسم (الكائن لا يختفي).</div>
+      </div>
+    </div>
+
+    <!-- 11 -->
+    <div class="product-card" data-age="4-6">
+      <div class="product-media"><span class="age-badge">4–6 سنوات</span>
+        <svg viewBox="0 0 100 100"><rect x="15" y="20" width="70" height="60" rx="8" fill="#F0E7D6" stroke="#8B5A3C" stroke-width="2"/><text x="50" y="58" font-size="30" text-anchor="middle" fill="#C97A47" font-family="Cairo" font-weight="800">1 2</text></svg>
+      </div>
+      <div class="product-info">
+        <h3>لوحة تعلّم الأرقام</h3>
+        <p class="desc">أرقام خشبية بارزة الملمس يتتبعها الطفل بإصبعه من 1 إلى 10.</p>
+        <div class="price">65 ريال</div>
+        <div class="learn"><b>ماذا يتعلم طفلك؟</b>التعرف على الأرقام والاستعداد للكتابة.</div>
+      </div>
+    </div>
+
+    <!-- 12 -->
+    <div class="product-card" data-age="1-2">
+      <div class="product-media"><span class="age-badge">1–4 سنوات</span>
+        <svg viewBox="0 0 100 100"><rect x="25" y="65" width="50" height="10" rx="5" fill="#8B5A3C"/><rect x="30" y="52" width="40" height="10" rx="5" fill="#C97A47"/><rect x="35" y="39" width="30" height="10" rx="5" fill="#D9A441"/><rect x="40" y="26" width="20" height="10" rx="5" fill="#6C7C58"/></svg>
+      </div>
+      <div class="product-info">
+        <h3>قوس ألوان الطيف المتدرج</h3>
+        <p class="desc">أقواس خشبية ملونة قابلة للتكديس والبناء بعشرات الطرق المختلفة.</p>
+        <div class="price">75 ريال</div>
+        <div class="learn"><b>ماذا يتعلم طفلك؟</b>التوازن، الإبداع الحر، وتدرّج الأحجام.</div>
+      </div>
+    </div>
+
+    <!-- 13 -->
+    <div class="product-card" data-age="4-6">
+      <div class="product-media"><span class="age-badge">4–6 سنوات</span>
+        <svg viewBox="0 0 100 100"><rect x="15" y="20" width="70" height="60" rx="8" fill="#D9A441"/><path d="M30 60 Q50 30 70 60" stroke="#F0E7D6" stroke-width="5" fill="none" stroke-linecap="round" stroke-dasharray="4 6"/></svg>
+      </div>
+      <div class="product-info">
+        <h3>لوحة تتبّع الحروف</h3>
+        <p class="desc">حروف بارزة الملمس بخط الرمل، يتبعها الطفل بإصبعه قبل تعلّم الكتابة بالقلم.</p>
+        <div class="price">69 ريال</div>
+        <div class="learn"><b>ماذا يتعلم طفلك؟</b>الاستعداد للكتابة عبر الذاكرة العضلية للحروف.</div>
+      </div>
+    </div>
+
+    <!-- 14 -->
+    <div class="product-card" data-age="2-4">
+      <div class="product-media"><span class="age-badge">3–6 سنوات</span>
+        <svg viewBox="0 0 100 100"><rect x="15" y="55" width="70" height="20" rx="10" fill="#6C7C58"/><circle cx="35" cy="35" r="10" fill="#C97A47"/><circle cx="60" cy="30" r="10" fill="#D9A441"/><line x1="35" y1="45" x2="35" y2="55" stroke="#8B5A3C" stroke-width="2"/></svg>
+      </div>
+      <div class="product-info">
+        <h3>لعبة صيد السمك المغناطيسية</h3>
+        <p class="desc">صنارة مغناطيسية صغيرة و8 أسماك خشبية ملونة في "بحيرة" قماشية.</p>
+        <div class="price">59 ريال</div>
+        <div class="learn"><b>ماذا يتعلم طفلك؟</b>التآزر البصري الحركي وتعلم الانتظار بالدور.</div>
+      </div>
+    </div>
+
+    <!-- 15 -->
+    <div class="product-card" data-age="4-6">
+      <div class="product-media"><span class="badge">جديد</span><span class="age-badge">3–6 سنوات</span>
+        <svg viewBox="0 0 100 100"><rect x="20" y="45" width="60" height="30" rx="6" fill="#8B5A3C"/><rect x="30" y="25" width="14" height="24" rx="3" fill="#C97A47"/><rect x="48" y="20" width="14" height="29" rx="3" fill="#6C7C58"/><rect x="66" y="30" width="14" height="19" rx="3" fill="#D9A441"/></svg>
+      </div>
+      <div class="product-info">
+        <h3>مجموعة أدوات الحياة العملية</h3>
+        <p class="desc">ملعقة، ملقط، وإبريق صغير بمقاسات تناسب يد الطفل لتقليد أعمال المنزل الحقيقية.</p>
+        <div class="price">95 ريال</div>
+        <div class="learn"><b>ماذا يتعلم طفلك؟</b>الاعتماد على النفس ومهارات الحياة اليومية.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>© 2026 Tiny Minds. جميع الحقوق محفوظة.</footer>
+
+<script>
+  const chips = document.querySelectorAll('.chip');
+  const cards = document.querySelectorAll('.product-card');
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chips.forEach(c => c.classList.remove('on'));
+      chip.classList.add('on');
+      const age = chip.dataset.age;
+      cards.forEach(card => {
+        card.style.display = (age === 'all' || card.dataset.age === age) ? 'flex' : 'none';
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
